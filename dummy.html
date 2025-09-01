@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="dummy.css" />
+</head>
+<body>
+  <div class="container">
+    <main class="card login-card">
+      <h1>🎓 ExamPro</h1>
+      <p class="subtitle">Professional Online Examination Platform</p>
+
+      <form id="loginForm">
+        <div class="input">
+          <input type="text" id="username" placeholder="Username" required />
+          <img src="assets/icon/user_icon 1.png" alt="User Icon" class="icon" />
+        </div>
+
+        <div class="input">
+          <input type="password" id="password" placeholder="Password" required />
+          <img src="assets/icon/icon_padlock 1.png" alt="Lock Icon" class="icon" />
+        </div>
+
+        <div class="row">
+          <label>
+            <input type="checkbox" id="showPassword" /> Show Password
+          </label>
+          <a href="#" class="link">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+
+        <p class="foot">Don’t have an account? <a href="#" class="link">Register</a></p>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    // Toggle show/hide password
+    document.getElementById("showPassword").addEventListener("change", function () {
+      const passwordInput = document.getElementById("password");
+      passwordInput.type = this.checked ? "text" : "password";
+    });
+
+    // Handle login
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault(); // prevent page refresh
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // Allowed login credentials
+      if (
+        (username === "admin" && password === "admin") ||
+        (username === "user" && password === "hehehe") ||
+        (username === "nanas" && password === "444")
+      ) {
+        window.location.href = "pages/home.html";
+      } else {
+        alert("❌ Invalid username or password!");
+      }
+    });
+  </script>
+</body>
+</html>

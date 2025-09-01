@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try Out Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .login-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .exam-section {
+            display: none;
+        }
+        .exam-section.active {
+            display: block;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .question h3 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover {
+            border-color: #667eea;
+        }
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .submit-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background: #218838;
+        }
+        .results {
+            text-align: center;
+            padding: 20px;
+        }
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .admin-section {
+            margin-top: 30px;
+        }
+        .participant-list {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .participant-item {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .participant-item:last-child {
+            border-bottom: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Try Out Online</h1>
+            <p>Latihan ujian online, mudah dan interaktif!</p>
+        </div>
+
+        <!-- Login Card (direct to exam, no Google login) -->
+        <div class="card" id="loginCard">
+            <div class="login-section">
+                <h2>Selamat Datang di Try Out Online!</h2>
+                <p style="margin: 20px 0; color: #666;">Try out ini terdiri dari 5 soal pilihan ganda. Anda memiliki waktu 10 menit untuk menyelesaikan.</p>
+                <button class="submit-btn" onclick="showMainApp()">Mulai Try Out</button>
+            </div>
+        </div>
+
+        <!-- Main App Section -->
+        <div class="card hidden" id="mainApp">
+            <div class="user-info">
+                <div>
+                    <strong id="userName">Peserta Try Out</strong>
+                    <p style="color: #666; font-size: 14px;" id="userEmail">guest@example.com</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Keluar</button>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('exam')">Ujian Try Out</button>
+                <button class="tab-btn" onclick="showTab('results')">Hasil Saya</button>
+                <button class="tab-btn" onclick="showTab('admin')">Admin Panel</button>
+            </div>
+
+            <!-- Exam Section -->
+            <div id="examTab">
+                <div id="examStart">
+                    <h2>Selamat Datang di Try Out Online!</h2>
+                    <p style="margin: 15px 0;">Try out ini terdiri dari 5 soal pilihan ganda. Anda memiliki waktu 10 menit untuk menyelesaikan.</p>
+                    <button class="submit-btn" onclick="startExam()">Mulai Try Out</button>
+                </div>
+
+                <div class="exam-section" id="examQuestions">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3>Waktu Tersisa: <span id="timer">10:00</span></h3>
+                    </div>
+                    <div id="questionsContainer"></div>
+                    <button class="submit-btn" onclick="submitExam()">Submit Jawaban</button>
+                </div>
+
+                <div class="exam-section" id="examResults">
+                    <div class="results">
+                        <h2>Hasil Try Out Anda</h2>
+                        <div class="score" id="finalScore">0</div>
+                        <p>dari 5 soal</p>
+                        <p style="margin-top: 20px; color: #666;" id="resultMessage"></p>
+                        <button class="submit-btn" onclick="resetExam()" style="margin-top: 20px;">Coba Lagi</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Tab -->
+            <div id="resultsTab" class="hidden">
+                <h2>Riwayat Hasil Ujian</h2>
+                <div id="userResults"></div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="adminTab" class="hidden">
+                <h2>Data Peserta Try Out</h2>
+                <div class="participant-list" id="participantList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage (dalam implementasi nyata, gunakan database)
+        let userData = {
+            isLoggedIn: false,
+            user: { name: "Peserta Try Out", email: "guest@example.com" },
+            allParticipants: [],
+            currentUserResults: []
+        };
+
+        // Soal-soal try out
+        const questions = [
+            {
+                question: "Apa ibu kota Indonesia?",
+                options: ["Jakarta", "Surabaya", "Bandung", "Medan"],
+                correct: 0
+            },
+            {
+                question: "Berapa hasil dari 15 + 28?",
+                options: ["41", "42", "43", "44"],
+                correct: 2
+            },
+            {
+                question: "Siapa presiden pertama Indonesia?",
+                options: ["Soekarno", "Soeharto", "Habibie", "Megawati"],
+                correct: 0
+            },
+            {
+                question: "Planet terdekat dengan matahari adalah?",
+                options: ["Venus", "Mars", "Merkurius", "Bumi"],
+                correct: 2
+            },
+            {
+                question: "Bahasa pemrograman yang sering digunakan untuk web adalah?",
+                options: ["C++", "JavaScript", "Assembly", "COBOL"],
+                correct: 1
+            }
+        ];
+
+        let currentAnswers = [];
+        let examTimer;
+        let timeLeft = 600; // 10 menit dalam detik
+
+        function showMainApp() {
+            document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userName').textContent = userData.user.name;
+            document.getElementById('userEmail').textContent = userData.user.email;
+
+            // Tambahkan peserta jika belum ada
+            const existingParticipant = userData.allParticipants.find(p => p.email === userData.user.email);
+            if (!existingParticipant) {
+                userData.allParticipants.push({
+                    name: userData.user.name,
+                    email: userData.user.email,
+                    scores: []
+                });
+            }
+
+            updateResultsTab();
+            updateAdminPanel();
+        }
+
+        function logout() {
+            userData.isLoggedIn = false;
+            userData.user = { name: "Peserta Try Out", email: "guest@example.com" };
+            document.getElementById('loginCard').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            resetExam();
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.getElementById('examTab').classList.add('hidden');
+            document.getElementById('resultsTab').classList.add('hidden');
+            document.getElementById('adminTab').classList.add('hidden');
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        function startExam() {
+            document.getElementById('examStart').style.display = 'none';
+            document.getElementById('examQuestions').classList.add('active');
+            currentAnswers = new Array(questions.length).fill(-1);
+            displayQuestions();
+            startTimer();
+        }
+
+        function displayQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <h3>Soal ${index + 1}. ${q.question}</h3>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectAnswer(${index}, ${optIndex})">
+                                ${String.fromCharCode(65 + optIndex)}. ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function selectAnswer(questionIndex, optionIndex) {
+            currentAnswers[questionIndex] = optionIndex;
+            // Update visual selection
+            const questionDiv = document.querySelectorAll('.question')[questionIndex];
+            const options = questionDiv.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+        }
+
+        function startTimer() {
+            timeLeft = 600; // Reset to 10 minutes
+            updateTimerDisplay();
+            examTimer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(examTimer);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function submitExam() {
+            clearInterval(examTimer);
+            // Hitung score
+            let score = 0;
+            questions.forEach((q, index) => {
+                if (currentAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+            // Simpan hasil
+            const result = {
+                date: new Date().toLocaleDateString('id-ID'),
+                time: new Date().toLocaleTimeString('id-ID'),
+                score: score,
+                total: questions.length,
+                percentage: Math.round((score / questions.length) * 100)
+            };
+            // Update data peserta
+            const participant = userData.allParticipants.find(p => p.email === userData.user.email);
+            participant.scores.push(result);
+            // Tampilkan hasil
+            document.getElementById('examQuestions').classList.remove('active');
+            document.getElementById('examResults').classList.add('active');
+            document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+            let resultMessage = '';
+            if (result.percentage >= 80) {
+                resultMessage = 'Excellent! Hasil yang sangat baik!';
+            } else if (result.percentage >= 60) {
+                resultMessage = 'Good! Terus tingkatkan lagi!';
+            } else {
+                resultMessage = 'Perlu lebih banyak belajar. Semangat!';
+            }
+            document.getElementById('resultMessage').textContent = resultMessage;
+            updateResultsTab();
+            updateAdminPanel();
+        }
+
+        function resetExam() {
+            document.getElementById('examStart').style.display = 'block';
+            document.getElementById('examQuestions').classList.remove('active');
+            document.getElementById('examResults').classList.remove('active');
+            clearInterval(examTimer);
+        }
+
+        function updateResultsTab() {
+            const participant = userData.allParticipants.find(p => p.email === userData.user.email);
+            const resultsContainer = document.getElementById('userResults');
+            if (!participant || participant.scores.length === 0) {
+                resultsContainer.innerHTML = '<p style="text-align: center; color: #666;">Belum ada hasil ujian</p>';
+                return;
+            }
+            resultsContainer.innerHTML = `
+                <div class="participant-list">
+                    ${participant.scores.map((result, index) => `
+                        <div class="participant-item">
+                            <div>
+                                <strong>Try Out #${index + 1}</strong>
+                                <p style="color: #666; font-size: 14px;">${result.date} - ${result.time}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <strong style="color: ${result.percentage >= 80 ? '#28a745' : result.percentage >= 60 ? '#ffc107' : '#dc3545'}">
+                                    ${result.score}/${result.total} (${result.percentage}%)
+                                </strong>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function updateAdminPanel() {
+            const container = document.getElementById('participantList');
+            if (userData.allParticipants.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Belum ada peserta</p>';
+                return;
+            }
+            container.innerHTML = userData.allParticipants.map(participant => {
+                const avgScore = participant.scores.length > 0 
+                    ? Math.round(participant.scores.reduce((acc, result) => acc + result.percentage, 0) / participant.scores.length)
+                    : 0;
+                return `
+                    <div class="participant-item">
+                        <div>
+                            <strong>${participant.name}</strong>
+                            <p style="color: #666; font-size: 14px;">${participant.email}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>Ujian: ${participant.scores.length}</strong>
+                            <p style="color: #666; font-size: 14px;">
+                                Rata-rata: ${avgScore}%
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize some sample data
+        userData.allParticipants = [
+            {
+                name: "Rina Sari",
+                email: "rina.sari@gmail.com",
+                scores: [
+                    { date: "30/08/2025", time: "14:30", score: 4, total: 5, percentage: 80 },
+                    { date: "25/08/2025", time: "10:15", score: 3, total: 5, percentage: 60 }
+                ]
+            },
+            {
+                name: "Budi Santoso",
+                email: "budi.santoso@gmail.com", 
+                scores: [
+                    { date: "29/08/2025", time: "16:45", score: 5, total: 5, percentage: 100 }
+                ]
+            }
+        ];
+        updateAdminPanel();
+    </script>
+</body>
+</html>
