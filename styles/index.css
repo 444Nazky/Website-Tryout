@@ -1,26 +1,28 @@
 :root {
-  --card-bg: rgba(0,0,0,.72);
-  --text: #fff;
-  --muted: rgba(255,255,255,.75);
-  --stroke: rgba(255,255,255,.25);
-  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --card-bg: #ffffff;       
+  --text: #000;
+  --muted: rgba(0,0,0,.65);  
+  --stroke: rgba(0,0,0,.15); 
+  --shadow: 0 8px 24px rgba(0,0,0,.12); 
   --radius-pill: 9999px;
 }
+
+.subtitle {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 18px; 
+  font-weight: 500;
+  color: var(--muted);
+}
+
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 
-
-
-
-
 body {
   margin: 0;
-  font-family: Arial;
-  
-  background: radial-gradient(1200px 600px at 50% 20%, 
-  rgba(0,0,0,.45), rgba(0,0,0,.85)), url('assets/images/background.jpg'); 
-
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   background-position: center;
   background-size: cover;
   display: grid;
@@ -28,73 +30,73 @@ body {
   color: var(--text);
 }
 
-
-
-
-
 .card {
-  width: min(92vw, 420px);
-  background: var(--card-bg);
-  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px 30px;
   border-radius: 20px;
-  box-shadow: var(--shadow);
-  padding: 32px 28px 26px;
+
+  /* White liquid glass effect */
+  background: rgba(255, 255, 255, 0.25); /* semi-transparent */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
+  backdrop-filter: blur(15px); /* frosted glass */
+  -webkit-backdrop-filter: blur(15px); /* Safari support */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* soft shadow */
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+  animation: cardAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center;
+  transition: all 0.3s ease;
 }
 
-
-
+.card:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
 
 
 h1 {
-  margin: 0 0 18px;
+  margin: 0 0 6px;
   text-align: center;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 800;
-  letter-spacing: .2px;
+  letter-spacing: .3px;
+  color: var(--text);
 }
 
-
-
-
-
+.subtitle {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
 
 .input {
   position: relative;
   margin: 14px 0;
 }
 
-
-
-
-
-
 .input input {
   width: 100%;
   padding: 14px 48px 14px 18px;
-  border-radius: var(--radius-pill);
+  border-radius: 15px;
   border: 1px solid var(--stroke);
-  background: rgba(255,255,255,.06);
+  background: #f9f9f9; /* lebih putih */
   color: var(--text);
   font-size: 15px;
   outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease;
+  transition: border-color .15s ease, background .15s ease;
 }
-
-
-
-
-
 
 .input input::placeholder { color: var(--muted); }
 
 .input input:focus {
-  border-color: rgba(255,255,255,.45);
-  box-shadow: 0 0 0 4px rgba(255,255,255,.10);
+  border-color: #667eea;
+  background: #fff;
 }
-
-
-
-
 
 .icon {
   position: absolute;
@@ -103,68 +105,121 @@ h1 {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  opacity: .9;
+  opacity: .7;
   pointer-events: none;
-  border-radius: 4px;
-  object-fit: cover;
 }
-
-
-
-
 
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
   margin: 6px 2px 18px;
   gap: 8px;
 }
 
-
-
-
-
 .row a {
-  color: var(--text);
+  color: #667eea;
   text-decoration: none;
-  opacity: .9;
+  font-weight: 600;
 }
 .row a:hover { text-decoration: underline; }
-
-
-
-
 
 button {
   width: 100%;
   border: none;
   border-radius: var(--radius-pill);
-  background: #fff;
-  color: #000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
   font-weight: 700;
   font-size: 16px;
-  padding: 14px 18px;
+  padding: 12px;
   cursor: pointer;
   transition: filter .15s ease, transform .02s ease-in-out;
 }
 button:hover { filter: brightness(.95); }
 button:active { transform: translateY(1px); }
 
-
-
-
-
 .foot {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 18px;
   color: var(--muted);
   font-size: 14px;
 }
-.foot a { color: #fff; font-weight: 700; text-decoration: none; }
+.foot a { color: #667eea; font-weight: 700; text-decoration: none; }
 .foot a:hover { text-decoration: underline; }
 
 label { cursor: pointer; user-select: none; }
-input[type="checkbox"] { accent-color: #fff; }
+input[type="checkbox"] { accent-color: #667eea; }
+
+#loginError {
+  font-weight: bold;
+  color: #e53935;
+  text-align: center;
+  margin-top: 12px;
+}
+
+
+.row a {
+    color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.row a:hover {
+  color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  text-decoration: underline;
+}
+
+.row a {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  display: inline-block;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  animation: gradientFlow 3s ease infinite;
+}
+
+.row a:hover {
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.card {
+  width: min(92vw, 420px);
+  padding: 36px 32px 30px;
+  border-radius: 20px;
+
+  /* White liquid glass effect */
+  background: rgba(255, 255, 255, 0.25); /* semi-transparent white */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* subtle border */
+  backdrop-filter: blur(15px); /* blur the background behind */
+  -webkit-backdrop-filter: blur(15px); /* Safari support */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* soft shadow for depth */
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Optional hover effect to enhance the “liquid” feel */
+.card:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}

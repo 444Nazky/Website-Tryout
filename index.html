@@ -3,59 +3,207 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login</title>
-  <link rel="stylesheet" href="styles/index.css" />
+  <title>ExamPro Login</title>
+  <style>
+    :root {
+      --card-bg: #ffffff;
+      --text: #2d3748;
+      --muted: #718096;
+      --stroke: #e2e8f0;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --radius-pill: 9999px;
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --success: #48bb78;
+      --error: #f56565;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: 400% 400%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      animation: gradientBG 15s ease infinite;
+      padding: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 36px 32px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+
+    h1 { margin-bottom: 6px; text-align: center; font-size: 32px; font-weight: 800; color: var(--text); }
+    .subtitle { text-align: center; margin-bottom: 22px; font-size: 16px; color: var(--muted); }
+
+    .input { position: relative; margin: 18px 0; }
+    .input input {
+      width: 100%;
+      padding: 16px 48px 16px 18px;
+      border-radius: 15px;
+      border: 1px solid var(--stroke);
+      background: #f9f9f9;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; opacity: 0.7; pointer-events: none; }
+
+    .row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); margin: 6px 2px 22px; }
+    .row a { background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; font-weight: 600; }
+    .row a:hover { text-decoration: underline; }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--primary-gradient);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px;
+      cursor: pointer;
+    }
+
+    #loginError { font-weight: bold; color: var(--error); text-align: center; margin-top: 12px; min-height: 20px; }
+    .success-message { color: var(--success); font-weight: 600; }
+    .shake { animation: shake 0.5s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0);} 20%,60%{transform:translateX(-5px);} 40%,80%{transform:translateX(5px);} }
+
+    .foot { text-align: center; margin-top: 22px; color: var(--muted); font-size: 14px; }
+    .foot a { background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
+
+    .particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; }
+    .particle { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float 15s infinite linear; }
+    @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity:1;} 90%{opacity:1;} 100%{transform:translateY(-100px) rotate(360deg);opacity:0;} }
+  </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Login</h1>
+  <div class="particles" id="particles"></div>
 
-    <form>
+  <main class="card">
+    <h1>🎓 ExamPro</h1>
+    <p class="subtitle">Welcome! Please log in to start your exam</p>
+
+    <form id="loginForm">
       <div class="input">
         <input type="text" id="username" placeholder="Username" required />
-        <img src="assets/icon/user_icon.png" alt="User Icon" class="icon" />
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
       </div>
 
       <div class="input">
         <input type="password" id="password" placeholder="Password" required />
-        <img src="assets/icon/icon_padlock.png" alt="Lock Icon" class="icon" />
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <circle cx="12" cy="16" r="1"></circle>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
       </div>
 
       <div class="row">
-        <label>
-          <input type="checkbox" id="showPassword" /> Show
-        </label>
+        <label><input type="checkbox" id="showPassword"> Show Password</label>
         <a href="#">Forgot Password?</a>
       </div>
 
-      <button type="button" id="loginBtn">Login</button>
-
-      <p class="foot">Don’t have an account? <a href="#">Register</a></p>
+      <button type="submit" id="loginBtn">Login</button>
+      <div id="loginError"></div>
+      <p class="foot">Don't have an account? <a href="#">Register</a></p>
     </form>
   </main>
 
-<script>
-  document.getElementById("showPassword").addEventListener("change", function () {
-    const passwordInput = document.getElementById("password");
-    passwordInput.type = this.checked ? "text" : "password";
-  });
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const showPasswordCheckbox = document.getElementById('showPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+    const particlesContainer = document.getElementById('particles');
 
-  document.getElementById("loginBtn").addEventListener("click", function () {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    // Allow login for admin/1111 or test/beta
-    if (
-      (username === "admin" && password === "admin") ||
-      (username === "user" && password === "hehehe")
-      (username === "nanas" && password === "444")
-    ) {
-      window.location.href = "pages/home.html";
-    } else {
-      alert("Invalid username or password!");
-      // Stay on the login page
+    // Create floating particles
+    function createParticles() {
+      for(let i=0; i<20; i++){
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random()*8+2;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${Math.random()*100}%`;
+        p.style.animationDelay = `${Math.random()*15}s`;
+        p.style.animationDuration = `${Math.random()*10+15}s`;
+        particlesContainer.appendChild(p);
+      }
     }
-  });
-</script>
+
+    // Toggle password visibility
+    showPasswordCheckbox.addEventListener('change', () => {
+      passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+    });
+
+    // Handle login
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if(!username || !password){ 
+        showError('Please enter both username and password'); 
+        return; 
+      }
+
+      const orig = loginBtn.textContent;
+      loginBtn.textContent = 'Logging in...';
+      loginBtn.disabled = true;
+
+      // Instant login check
+      if ((username === "admin" && password === "1111") || (username === "user" && password === "hehe")) {
+        showSuccess('Login successful! Redirecting...');
+        setTimeout(() => { window.location.href="pages/exam.html"; }, 300); // quick redirect
+      } else {
+        showError('Invalid username or password!');
+        resetForm(loginBtn, orig);
+      }
+    });
+
+    function showError(msg){
+      loginError.textContent = msg;
+      loginError.classList.remove('success-message');
+      loginError.classList.add('shake');
+      setTimeout(()=>loginError.classList.remove('shake'),500);
+      setTimeout(()=>loginError.textContent='',5000);
+    }
+
+    function showSuccess(msg){
+      loginError.textContent = msg;
+      loginError.classList.remove('shake');
+      loginError.classList.add('success-message');
+    }
+
+    function resetForm(btn,text){ btn.textContent=text; btn.disabled=false; }
+
+    window.addEventListener('load', () => { createParticles(); usernameInput.focus(); });
+  </script>
 </body>
 </html>
